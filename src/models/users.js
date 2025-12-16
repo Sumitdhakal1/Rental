@@ -46,7 +46,27 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.pre("");
+UserSchema.pre("save", async function () {
+  if (this.isModified("Password")) {
+    this.password = await hash(this.password, 12);
+  }
+});
+
+UserSchema.pre("findOneAndUpdate", async function () {
+  const update = this.getUpdate();
+
+  const password =
+    update?.password ?? (update?.$set ? update?.$set.password : undefined);
+  if (password) {
+    const hashed = await hash(password, 12);
+    if (update.password) {
+      update.password = hashed;
+    }
+    if (update.$set && update.$set.password) {
+      update.$set.password = hashed;
+    }
+  }
+});
 
 const User = model("User", UserSchema);
 
