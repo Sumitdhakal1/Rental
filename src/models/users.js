@@ -12,7 +12,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      lowercasr: true,
+      lowercase: true,
       trim: true,
       validate: {
         validator: (email) => {
@@ -21,34 +21,32 @@ const UserSchema = new Schema(
         message: "Invalid email address",
       },
     },
+    password: {
+      type: String,
+      required: true,
+    },
     phone: {
-      type: Number,
+      type: String,
       required: true,
       unique: true,
       trim: true,
     },
     role: {
-      type: RoleType,
+      type: String,
       enum: ["user", "owner", "admin"],
       default: "user",
     },
-    isVerfied: {
+    isVerified: {
       type: Boolean,
       default: false,
-    },
-    preferences: {
-      location: String,
-      budgetMin: Number,
-      budgetMax: Number,
-      gender: String,
     },
   },
   { timestamps: true }
 );
 
 UserSchema.pre("save", async function () {
-  if (this.isModified("Password")) {
-    this.password = await hash(this.password, 12);
+  if (this.isModified("password")) {
+    this.password = await hash(this.password, 10);
   }
 });
 

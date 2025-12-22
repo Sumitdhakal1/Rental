@@ -11,15 +11,15 @@ const addressSchema = new Schema({
   },
   country: {
     type: String,
-    default: Nepal,
+    default: "Nepal",
   },
 });
 
-const PropertySchema = new Schema(
+const rentSpaceSchema = new Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
       required: true,
     },
     title: {
@@ -36,6 +36,12 @@ const PropertySchema = new Schema(
       type: Number,
       required: true,
     },
+    areaSqFt: {
+      type: Number,
+    },
+    bedrooms: {
+      type: Number,
+    },
     images: [String],
     isAvilable: {
       type: Boolean,
@@ -45,6 +51,6 @@ const PropertySchema = new Schema(
   { timestamps: true }
 );
 
-const Property = model("Property", PropertySchema);
+const RentSpace = model("RentSpace", rentSpaceSchema);
 
-export default Property;
+export default RentSpace;
