@@ -10,3 +10,4 @@ RENTSPACE_ROUTER.get("/", async (req, res, next) => {
     next(error);
   }
 });
+export default RENTSPACE_ROUTER;
